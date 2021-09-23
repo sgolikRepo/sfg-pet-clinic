@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'home')}">
+<head>
+    <meta charset="UTF-8">
+    <title>Pet Clinic Index</title>
+</head>
+<body>
+
+<form th:action="@{/login}" method="post" style="max-width:350px;margin:0 auto">
+    <h2 th:text="#{welcome}">Welcome</h2>
+    <div th:if="${param.error}">
+        <p class="text-danger">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</p>
+    </div>
+
+    <div class="border border-secondary rounded p-3">
+        <p>Access to Pet clinic</p>
+        <p>
+            <input type="text" name="username" class="form-control" placeholder="userName" required/>
+            <input type="password" name="password" class="form-control" placeholder="password" required/>
+        </p>
+
+        <p>
+            <input type="submit" value="Login" class="btn btn-primary">
+        </p>
+    </div>
+
+
+</form>
+
+</body>
+</html>

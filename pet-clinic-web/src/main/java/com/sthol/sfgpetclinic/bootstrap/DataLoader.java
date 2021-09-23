@@ -1,8 +1,11 @@
 package com.sthol.sfgpetclinic.bootstrap;
 
 import com.sthol.sfgpetclinic.model.*;
+import com.sthol.sfgpetclinic.repositories.UserRepository;
 import com.sthol.sfgpetclinic.services.*;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
@@ -15,19 +18,29 @@ public class DataLoader implements CommandLineRunner {
     private final PetTypeService petTypeService;
     private final SpecialityService specialityService;
     private final VisitService visitService;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public DataLoader(OwnerService ownerService, VetService vetService, PetTypeService petTypeService, SpecialityService specialityService, VisitService visitService) {
+    public DataLoader(OwnerService ownerService, VetService vetService, PetTypeService petTypeService, SpecialityService specialityService, VisitService visitService, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.ownerService = ownerService;
         this.vetService = vetService;
         this.petTypeService = petTypeService;
         this.specialityService = specialityService;
         this.visitService = visitService;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
     @Override
     public void run(String... args) throws Exception {
         int count = petTypeService.findAll().size();
+
+        User user = new User();
+        user.setUserName("sgolik");
+        user.setPassword(passwordEncoder.encode("123$"));
+        user.setEnabled(true);
+        userRepository.save(user);
 
         if (count == 0) {
             loadData();
